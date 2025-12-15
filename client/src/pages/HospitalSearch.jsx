@@ -3,7 +3,9 @@ import toast from 'react-hot-toast';
 import apiClient from '../api/apiClient';
 import PageHeader from '../components/PageHeader';
 import StatusBadge from '../components/StatusBadge';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner'; // Keeping it for now if used elsewhere, or I can remove if I'm sure. 
+// Actually I'll just add SkeletonLoader import, and remove LoadingSpinner if I'm replacing it fully in this file.
+import SkeletonLoader from '../components/SkeletonLoader';
 import { BLOOD_GROUPS } from '../constants';
 import { useHospital } from '../context/HospitalContext';
 
@@ -123,8 +125,10 @@ const HospitalSearch = () => {
       </form>
 
       {loading ? (
-        <LoadingSpinner />
-      ) : (
+        <div className="bg-white p-6 rounded-xl shadow-sm ring-1 ring-slate-100">
+          <SkeletonLoader type="table" count={5} />
+        </div>
+      ) : results.length > 0 ? (
         <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-slate-100">
           <table className="min-w-full divide-y divide-slate-100">
             <thead className="bg-slate-50">
@@ -162,25 +166,21 @@ const HospitalSearch = () => {
                   <td className="px-4 py-3 text-sm text-slate-600">
                     <button
                       onClick={() => handleContact(donor._id)}
-                      className="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white"
+                      className="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white transition-colors hover:bg-emerald-700"
                     >
                       Contact
                     </button>
                   </td>
                 </tr>
               ))}
-              {results.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="px-4 py-6 text-center text-sm text-slate-500"
-                  >
-                    No donors found. Adjust your filters and try again.
-                  </td>
-                </tr>
-              )}
             </tbody>
           </table>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center rounded-xl bg-white p-12 text-center shadow-sm ring-1 ring-slate-100">
+          <div className="mb-4 text-4xl">🔍</div>
+          <h3 className="mb-1 text-lg font-medium text-slate-900">No donors found</h3>
+          <p className="text-slate-500">We couldn't find any donors matching your criteria. Try adjusting the filters.</p>
         </div>
       )}
     </div>

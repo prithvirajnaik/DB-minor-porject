@@ -18,48 +18,111 @@ const Navbar = () => {
     navigate('/hospital/login');
   };
 
+  const navLinks = [
+    { to: '/dashboard', label: 'Dashboard', authRequired: false },
+    { to: '/donor/register', label: 'Register', authRequired: false },
+    { to: '/hospital/search', label: 'Search', authRequired: true },
+    { to: '/hospital/requests', label: 'Requests', authRequired: true },
+  ];
+
+  const visibleLinks = navLinks.filter(link => !link.authRequired || hospital);
+
   return (
-    <nav className="bg-white shadow-sm">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-lg font-semibold text-rose-600">
-            Blood Donor Search
-          </p>
-          {hospital ? (
-            <p className="text-sm text-slate-500">
-              Logged in as {hospital.name} ({hospital.city})
-            </p>
-          ) : (
-            <p className="text-sm text-slate-500">Hospital login required</p>
-          )}
+    <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+        {/* Logo Section */}
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-600 text-white shadow-sm">
+            <span className="text-lg font-bold">B</span>
+          </div>
+          <span className="hidden text-lg font-bold text-slate-800 sm:block">
+            BloodLink
+          </span>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          {links.map(({ to, label }) => (
+
+        {/* Desktop Navigation - Centered */}
+        <div className="hidden items-center gap-1 sm:flex">
+          {visibleLinks.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               className={({ isActive }) =>
-                `text-sm font-medium ${
-                  isActive ? 'text-rose-600' : 'text-slate-600'
+                `rounded-full px-4 py-1.5 text-sm font-medium transition-all ${isActive
+                  ? 'bg-rose-50 text-rose-600 shadow-sm ring-1 ring-rose-100'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }`
               }
             >
               {label}
             </NavLink>
           ))}
-          {hospital ? (
-            <button
-              onClick={handleLogout}
-              className="rounded-md bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-200"
+          {hospital && (
+            <NavLink
+              to="/donor/manage"
+              className={({ isActive }) =>
+                `rounded-full px-4 py-1.5 text-sm font-medium transition-all ${isActive
+                  ? 'bg-rose-50 text-rose-600 shadow-sm ring-1 ring-rose-100'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`
+              }
             >
-              Logout
-            </button>
+              Manage
+            </NavLink>
+          )}
+        </div>
+
+        {/* User Profile / Actions - Right */}
+        <div className="flex items-center gap-4">
+          {hospital ? (
+            <div className="flex items-center gap-3">
+              <div className="hidden text-right sm:block">
+                <p className="text-xs font-semibold text-slate-900">{hospital.name}</p>
+                <p className="text-[10px] text-slate-500">{hospital.city}</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="rounded-full bg-slate-100 px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-200 hover:text-slate-900"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
             <NavLink
               to="/hospital/login"
-              className="rounded-md bg-rose-600 px-3 py-1 text-sm font-medium text-white"
+              className="rounded-full bg-rose-600 px-5 py-1.5 text-sm font-medium text-white shadow-sm shadow-rose-200 transition-all hover:bg-rose-700 hover:shadow-md"
             >
-              Login
+              Hospital Login
+            </NavLink>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Navigation (Simple Horizontal Scroll for now) */}
+      <div className="flex overflow-x-auto border-t border-slate-50 px-4 py-3 sm:hidden">
+        <div className="flex gap-2">
+          {visibleLinks.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium ${isActive
+                  ? 'bg-rose-50 text-rose-600'
+                  : 'text-slate-600 bg-slate-50'
+                }`
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
+          {hospital && (
+            <NavLink
+              to="/donor/manage"
+              className={({ isActive }) =>
+                `whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium ${isActive ? 'bg-rose-50 text-rose-600' : 'text-slate-600 bg-slate-50'
+                }`
+              }
+            >
+              Manage
             </NavLink>
           )}
         </div>

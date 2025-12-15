@@ -9,6 +9,7 @@ import HospitalSearch from './pages/HospitalSearch';
 import HospitalRequests from './pages/HospitalRequests';
 import { HospitalProvider } from './context/HospitalContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import PageTransition from './components/PageTransition';
 
 function App() {
   return (
@@ -19,15 +20,45 @@ function App() {
           <main className="mx-auto max-w-6xl px-4 py-8">
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/donor/register" element={<DonorRegister />} />
-              <Route path="/donor/manage" element={<DonorManage />} />
-              <Route path="/hospital/login" element={<HospitalLogin />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <PageTransition>
+                    <Dashboard />
+                  </PageTransition>
+                }
+              />
+              <Route
+                path="/donor/register"
+                element={
+                  <PageTransition>
+                    <DonorRegister />
+                  </PageTransition>
+                }
+              />
+              <Route
+                path="/donor/manage"
+                element={
+                  <PageTransition>
+                    <DonorManage />
+                  </PageTransition>
+                }
+              />
+              <Route
+                path="/hospital/login"
+                element={
+                  <PageTransition>
+                    <HospitalLogin />
+                  </PageTransition>
+                }
+              />
               <Route
                 path="/hospital/search"
                 element={
                   <ProtectedRoute>
-                    <HospitalSearch />
+                    <PageTransition>
+                      <HospitalSearch />
+                    </PageTransition>
                   </ProtectedRoute>
                 }
               />
@@ -35,7 +66,9 @@ function App() {
                 path="/hospital/requests"
                 element={
                   <ProtectedRoute>
-                    <HospitalRequests />
+                    <PageTransition>
+                      <HospitalRequests />
+                    </PageTransition>
                   </ProtectedRoute>
                 }
               />
