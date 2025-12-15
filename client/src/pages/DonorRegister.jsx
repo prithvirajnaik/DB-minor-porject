@@ -35,91 +35,95 @@ const DonorRegister = () => {
     }
   };
 
-  const inputClasses = "mt-2 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm transition-all focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 outline-none";
+  const inputClasses = "block w-full rounded-md border-slate-200 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm py-2 px-3 bg-slate-50";
+  const labelClasses = "block text-sm font-medium text-slate-700 mb-1";
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <PageHeader
-        title="Register Donor"
-        description="Capture donor information and their current availability."
-      />
-      <form
-        onSubmit={handleSubmit}
-        className="grid gap-6 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:grid-cols-2"
-      >
-        <div className="sm:col-span-2">
-          <label className="text-sm font-medium text-slate-700">Name</label>
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className={inputClasses}
-            placeholder="Donor full name"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-slate-700">
-            Blood Group
-          </label>
-          <select
-            name="blood_group"
-            value={form.blood_group}
-            onChange={handleChange}
-            className={inputClasses}
-          >
-            {BLOOD_GROUPS.map((group) => (
-              <option key={group} value={group}>
-                {group}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-slate-700">Phone</label>
-          <input
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            required
-            className={inputClasses}
-            placeholder="Contact number"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-slate-700">City</label>
-          <input
-            name="city"
-            value={form.city}
-            onChange={handleChange}
-            required
-            className={inputClasses}
-            placeholder="City"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-slate-700">
-            Availability
-          </label>
-          <select
-            name="availability_status"
-            value={form.availability_status}
-            onChange={handleChange}
-            className={inputClasses}
-          >
-            <option value="Available">Available</option>
-            <option value="Unavailable">Unavailable</option>
-          </select>
-        </div>
-        <div className="sm:col-span-2 pt-4">
-          <button
-            disabled={submitting}
-            className="w-full rounded-lg bg-rose-600 py-3 text-sm font-bold text-white shadow-sm transition-all hover:bg-rose-500 hover:shadow-md disabled:opacity-70 disabled:hover:shadow-none"
-          >
-            {submitting ? 'Registering...' : 'Register Donor'}
-          </button>
-        </div>
-      </form>
+    <div className="max-w-xl mx-auto py-8 animate-fade-in">
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Register New Donor</h1>
+        <p className="mt-2 text-sm text-slate-600">Enter the donor's details below to add them to the system.</p>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className={labelClasses}>Full Name</label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                className={inputClasses}
+                placeholder="e.g. John Doe"
+              />
+            </div>
+
+            <div>
+              <label className={labelClasses}>Blood Group</label>
+              <select
+                name="blood_group"
+                value={form.blood_group}
+                onChange={handleChange}
+                className={inputClasses}
+              >
+                {BLOOD_GROUPS.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className={labelClasses}>Availability</label>
+              <select
+                name="availability_status"
+                value={form.availability_status}
+                onChange={handleChange}
+                className={inputClasses}
+              >
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+              </select>
+            </div>
+
+            <div>
+              <label className={labelClasses}>Phone Number</label>
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                required
+                className={inputClasses}
+                placeholder="e.g. +91 98765 43210"
+              />
+            </div>
+
+            <div>
+              <label className={labelClasses}>City</label>
+              <input
+                name="city"
+                value={form.city}
+                onChange={handleChange}
+                required
+                className={inputClasses}
+                placeholder="e.g. Mumbai"
+              />
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <button
+              disabled={submitting}
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {submitting ? 'Registering...' : 'Register Donor'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
